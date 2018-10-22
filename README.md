@@ -59,4 +59,8 @@ Version 1.0.1 GPWAS package controls population structure using PC scores genera
 | "Sample2" | -36 | 35 | 138 |
 | "Sample3" | 15 | 10 | -7 |
 
+You need to prepare separate PC covariate files excluding each individual chromosome. If you have 10 chromosomes, you need to prepare 10 separate PC covariate files.
+
+**Example**: When you want to exclude chromosome 1, you need to make the file name as "Population\_structure\_exclude\_chrom\_1.txt". Then store all of these files to a folder.
+
 **Note**: All items should be split by space. The order of samples should be identical to the order of samples in both genotype and phenotype file. 
