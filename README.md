@@ -25,7 +25,7 @@ All of input data are required to be organized in following format.
 
 ## Genotype Data
 
-**Gene**: Keep the title of this item as "Gene" and do not change it. All of gene names were kept below it.
+**Gene**: Keep the title of this item as "Gene" and do not change it. All of gene names should be kept below it.
 
 **SNP**: Keep the title of this item as "SNP" and do not change it. The format of SNP should be written as "S"+chromosome+"\_"+SNP position.
 
@@ -43,9 +43,9 @@ All of input data are required to be organized in following format.
 
 ## Phenotype Data
 
-**Pheno** Name of phenotype name.
+**Pheno**: Name of phenotype name.
 
-**Sample** Individual sample name.
+**Sample**: Individual sample name.
 
 **Note**: All items should be split by space.
 
