@@ -61,6 +61,17 @@ Version 1.0.1 GPWAS package controls population structure using PC scores genera
 
 You need to prepare separate PC covariate files excluding each individual chromosome. If you have 10 chromosomes, you need to prepare 10 separate PC covariate files.
 
+**Note**: All items should be split by space. The order of samples should be identical to the order of samples in both genotype and phenotype file.
+
 **Example**: When you want to exclude chromosome 1, you need to make the file name as "Population\_structure\_exclude\_chrom\_1.txt". Then store all of these files to a folder.
 
-**Note**: All items should be split by space. The order of samples should be identical to the order of samples in both genotype and phenotype file. 
+# Running the model
+```r
+gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num)
+```
+ **ingeno** Input genotype file name/directory.
+ **inpheno** Input phenotype file name/directory.
+ **inpc** Input folder with PCA parsed population structure covariance. If n number of chromosomes, n number of separate files should be included, as SNPs on each chromosome is excluded for performing PCA once.
+ **g** A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
+ **gp** Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes.
+ **R** Number of iteration for scanning all of input phenotypes with one specific gene. Too big number will be redundancy and computationally cost. Suggested ranging from 10-50.
