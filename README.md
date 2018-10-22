@@ -69,14 +69,26 @@ You need to prepare separate PC covariate files excluding each individual chromo
 ```r
 gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num)
 ```
- **ingeno** Input genotype file name/directory.
+ **ingeno**: Input genotype file name/directory.
  
- **inpheno** Input phenotype file name/directory.
+ **inpheno**: Input phenotype file name/directory.
  
- **inpc** Input folder with PCA parsed population structure covariance. If n number of chromosomes, n number of separate files should be included, as SNPs on each chromosome is excluded for performing PCA once.
+ **inpc**: Input folder with PCA parsed population structure covariance. If n number of chromosomes, n number of separate files should be included, as SNPs on each chromosome is excluded for performing PCA once.
  
- **g** A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
+ **g**: A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
  
- **gp** Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes.
+ **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes.
  
- **R** Number of iteration for scanning all of input phenotypes with one specific gene. Too big number will be redundancy and computationally cost. Suggested ranging from 10-50.
+ **gv**: Output file name/directory of terminated p value for each gene.
+ 
+ **R**: Number of iteration for scanning all of input phenotypes with one specific gene. Too big number will be redundancy and computationally cost. Suggested ranging from 10-50.
+ 
+ ```r
+ # Custeromizing more
+ gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num, pc = 3, selectIn = 0.01, selectOut = 0.01)
+ ```
+**pc**: Number of PCs that needs to be included to control the population structure.
+
+**selectIn**: p value threshold to determine if a phenotype could be selected in the model.
+
+**selectOut**: p value threshold to determine if a phenotype could be dropped out from the model.
