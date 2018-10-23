@@ -2,7 +2,7 @@
 ## Genome-Phenome Wide Association Study
 
 <p align="center">
-<img src="GPWAS-logo2.png" height="330px" width="200px">
+<img src="GPWAS-logo2.png" height="300px" width="200px">
 </a>
 </p>
 
