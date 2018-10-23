@@ -31,7 +31,7 @@ All of input data are required to be organized in following format.
 
 **Sample**: Individual sample name. 
 
-**Note**: All items should be split by \tab
+**Note**: All items should be split by \tab. Making sure there is no missing data in your genotype file. 
 
 | Gene | SNP | Sample1 | Sample2 | Sample3 |
 | :---: | :---: |:---: |:---: | :---: |
@@ -47,7 +47,7 @@ All of input data are required to be organized in following format.
 
 **Sample**: Individual sample name.
 
-**Note**: All items should be split by space.
+**Note**: All items should be split by space. Make sure there is no missing data in your phenotype file or any row containing missing data will be removed for following analysis. 
 
 | Taxa | Pheno1 | Pheno2 | Pheno3 |
 | :---: | :---: |:---: |:---: |
@@ -72,15 +72,13 @@ You need to prepare separate PC covariate files excluding each individual chromo
 
 # Running the model
 ```r
-gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num)
+gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
 ```
  **ingeno**: Input genotype file name/directory.
  
  **inpheno**: Input phenotype file name/directory.
  
  **inpc**: Input folder with PCA parsed population structure covariance. If n number of chromosomes, n number of separate files should be included, as SNPs on each chromosome is excluded for performing PCA once.
- 
- **g**: A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
  
  **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes.
  
@@ -92,6 +90,8 @@ gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num)
  # Customizing more
  gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num, pc = 3, selectIn = 0.01, selectOut = 0.01)
  ```
+**g**: A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
+
 **pc**: Number of PCs that needs to be included to control the population structure.
 
 **selectIn**: p value threshold to determine if a phenotype could be selected in the model.
