@@ -92,6 +92,14 @@ gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
  ```
 **g**: A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
 
+Example as below:
+
+| Candidate |
+| :---: |
+| Gene1 |
+| Gene2 |
+| Gene3 |
+
 **pc**: Number of PCs that needs to be included to control the population structure.
 
 **selectIn**: p value threshold to determine if a phenotype could be selected in the model.
