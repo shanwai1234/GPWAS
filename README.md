@@ -47,7 +47,7 @@ All of input data are required to be organized in following format.
 
 **Sample**: Individual sample name.
 
-**Note**: All items should be split by space. Make sure there is no missing data in your phenotype file or any row containing missing data will be removed for following analysis. 
+**Note**: All items should be split by space. Make sure there is no missing data in your phenotype file or any row containing missing data will be removed for following analysis. The number of analyzed phenotype is better not exceed the number of individuals in the studied population. If you have extremely high-dimensional phenotypes, it is suggested to reduce ones that are too similar with others. 
 
 | Taxa | Pheno1 | Pheno2 | Pheno3 |
 | :---: | :---: |:---: |:---: |
