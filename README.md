@@ -74,7 +74,7 @@ You need to prepare separate PC covariate files excluding each individual chromo
 ```r
 gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
 ```
- **ingeno**: Input genotype file name/directory. It is recommended to split genotype file into multiple in order to reduce memory load.
+ **ingeno**: Input genotype file name/directory. It is recommended to split big genotype file into multiple in order to reduce memory load.
  
  **inpheno**: Input phenotype file name/directory.
  
