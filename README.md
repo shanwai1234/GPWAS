@@ -86,6 +86,8 @@ gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
  
  **R**: Number of iteration for scanning all of input phenotypes with one specific gene. Too big number will be redundancy and computationally cost. Suggested ranging from 10-50.
  
+ **Note**: Once you continueously seeing "No new add-in" and "No leave-out" means the model is stable.
+ 
  ```r
  # Customizing more
  gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num, pc = 3, selectIn = 0.01, selectOut = 0.01)
