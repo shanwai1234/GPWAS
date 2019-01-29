@@ -15,6 +15,9 @@
 ---
 # Installation and Package loading
 ```r
+# When the first time to use the package, please make sure MASS and leaps packages are installed under your R environment, if not, please use commands below to install
+> install.packages("leaps")
+> install.packages("MASS")
 # install "devtools" package in your R environment
 > devtools::install_github("shanwai1234/GPWAS")
 > library(GPWAS)
