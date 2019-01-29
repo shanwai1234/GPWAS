@@ -1,0 +1,15 @@
+Package: GPWAS
+Type: Package
+Title: Genome-Phenome Wide Association Studies
+Version: 1.0.1
+Author: Zhikai Liang, Yumou Qiu and James C. Schnable
+Maintainer: Zhikai Liang <zliang@huskers.unl.edu>
+Description: This package is going to discover novel association signals from scanning high-dimensional plant phenotype data with individual annotated genes along genome annotation file. 
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
+Depends: R (>= 3.4)
+Imports: MASS (>= 7.3), leaps(>= 3.0)
+NeedsCompilation: no
+Packaged: 2018-10-22 16:05:39 UTC; zliang
