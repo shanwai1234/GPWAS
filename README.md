@@ -15,6 +15,7 @@
 ---
 # Installation and Package loading
 ```r
+# R version is required >= 3.4.4
 # When the first time to use the package, please make sure MASS and leaps packages are installed under your R environment, if not, please use commands below to install
 > install.packages("leaps")
 > install.packages("MASS")
