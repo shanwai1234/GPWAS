@@ -132,12 +132,14 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
           data2 = cbind(DataGene2, data1)
           fmla1 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", med_pc, paste(tempNames, collapse= "+")))
           fit1 = lm(formula = fmla1, data = data2)
+          # jointly using multi-SNP determing each phenotype p value using F test
           out1 = anova(fit1)$"Pr(>F)"
           out2 = out1[-c(2,3,4,length(out1))]
           temp1 = length(out2)
           if (temp1 <= length(tempIndex)){ pv[i] = 1}
           if (temp1 > length(tempIndex)){ pv[i] = out2[temp1]}
         }
+        # determining if the most significant phenotype pass the threshold
         index1 = order(pv)[1]
         if (pv[index1] < thresholdIn){
           tempIndex0 = c(Covariate, candidate[index1])
