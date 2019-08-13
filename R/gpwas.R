@@ -132,14 +132,12 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
           data2 = cbind(DataGene2, data1)
           fmla1 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", med_pc, paste(tempNames, collapse= "+")))
           fit1 = lm(formula = fmla1, data = data2)
-          # jointly using multi-SNP determing each phenotype p value using F test
           out1 = anova(fit1)$"Pr(>F)"
-          out2 = out1[-c(2,3,4,length(out1))]
+          out2 = out1[-c(2:(pc+1),length(out1))]
           temp1 = length(out2)
           if (temp1 <= length(tempIndex)){ pv[i] = 1}
           if (temp1 > length(tempIndex)){ pv[i] = out2[temp1]}
         }
-        # determining if the most significant phenotype pass the threshold
         index1 = order(pv)[1]
         if (pv[index1] < thresholdIn){
           tempIndex0 = c(Covariate, candidate[index1])
@@ -157,7 +155,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
 
         #--- leave out ---
         out01 = anova(fit)$"Pr(>F)"
-        out02 = out01[-c(2,3,4,length(out01))]
+        out02 = out01[-c(2:(pc+1),length(out01))]
         if (length(out02) == 1) pv0 = 0
         if (length(out02) >= 2) pv0 = out02[-1]
         index2 = order(pv0)[length(pv0)]
@@ -201,6 +199,8 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
 
       SNP = DataGene[, 1]
       Covariate = c()
+      single_SNP = as.formula(paste('SNP', paste(1, init_pc, sep=' + '), sep=' ~ '))
+      fit = lm(single_SNP)
       thresholdIn = selectIn
       thresholdOut = selectOut
 
@@ -220,8 +220,8 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
           fit1 = lm(formula = fmla1, data = data2)
           out1 = summary(fit1)$coefficients
           temp1 = dim(out1)[1]
-          if (temp1 <= length(tempIndex + 3)){ pv[i] = 1}
-          if (temp1 > length(tempIndex + 3)){ pv[i] = out1[temp1, 4]}
+          if (temp1 <= length(tempIndex + pc)){ pv[i] = 1}
+          if (temp1 > length(tempIndex + pc)){ pv[i] = out1[temp1, 4]}
         }
         index1 = order(pv)[1]
         if (pv[index1] < thresholdIn){
@@ -240,10 +240,10 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
 
         #--- leave out ---
         out0 = summary(fit)$coefficients
-        out01 = out0[-c(1 : 4), ]
-        if (dim(out0)[1] == 4) pv0 = 0
-        if (dim(out0)[1] == 5) pv0 = out01[4]
-        if (dim(out0)[1] > 5) pv0 = out01[, 4]
+        out01 = out0[-c(1 : (pc+1)), ]
+        if (dim(out0)[1] == (pc+1)) pv0 = 0
+        if (dim(out0)[1] == (pc+2)) pv0 = out01[4]
+        if (dim(out0)[1] > (pc+2)) pv0 = out01[, 4]
         index2 = order(pv0)[length(pv0)]
         pvmax = pv0[index2]
         if (pvmax > thresholdOut){
