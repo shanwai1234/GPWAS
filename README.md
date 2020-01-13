@@ -111,3 +111,10 @@ Example as below:
 **selectIn**: p value threshold to determine if a phenotype could be selected in the model.
 
 **selectOut**: p value threshold to determine if a phenotype could be dropped out from the model.
+
+# GPWAS genes selection
+
+After running GPWAS model for collected phenotype and genotype data in a given population, you will obtain two files **gp** and **gv** (depends on your provided file names) with stored selected phenotypes per gene and p value per gene. GPWAS genes could be selected upon significant level per gene. However, if you are willing to set a threshold for GPWAS genes selection, we recommend you to shuffle each phenotype across all genotypes in your original phenotype data matrix for N times, then re-run GPWAS on each shuffled phenotype matrix and merge p-value per gene in your N **gv** outputs. Finally, you will get two list of p-value per gene: real data **gv** and N permutation data **gv**. When setting a p-value threshold **P**, you will know **R** genes in real data **gv** above **P** and **M** genes in permutation data above **P**. FDR could be determined using 
+```
+(M/N)/R
+```
