@@ -39,7 +39,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
   init_pc = paste(plist,collapse= " + ")
   med_pc = paste(init_pc,' + ',sep='')
 
-  for (g in gene){
+  for (g in gene){ # iterating all candidate genes within inside SNPs
     print (g)
     glist = c(glist,g)
     tp = mygeno[mygeno$Gene==g,]
@@ -115,10 +115,10 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       Covariate = c()
       fmla0 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~", init_pc))
       fit = lm(formula = fmla0, data = DataGene2)
-      thresholdIn = selectIn
-      thresholdOut = selectOut
+      thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure 
+      thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure 
 
-      for (rep in 1 : R){
+      for (rep in 1 : R){ # iterating the set number of iterations R
         candidate = setdiff(c(1 : M2[2]), Covariate)
         pv = c()
 
@@ -201,8 +201,8 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       Covariate = c()
       single_SNP = as.formula(paste('SNP', paste(1, init_pc, sep=' + '), sep=' ~ '))
       fit = lm(single_SNP)
-      thresholdIn = selectIn
-      thresholdOut = selectOut
+      thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure 
+      thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure
 
       for (rep in 1 : R){
         candidate = setdiff(c(1 : M2[2]), Covariate)
@@ -272,8 +272,8 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     myl = length(rownames(kk))
     left = rep(g,myl)
     d = cbind(left,tk)
-    write.table(d,file=gp,append=T,col.names = FALSE)
+    write.table(d,file=gp,append=T,col.names = FALSE) # generating the file about each inspected gene with associated phenotypes
     gd = cbind(glist,gvalue)
   }
-  write.table(gd,file=gv,append=T,col.names = FALSE)
+  write.table(gd,file=gv,append=T,col.names = FALSE) # generating the accumulated p-value for each gene by GPWAS
 }
