@@ -118,3 +118,6 @@ After running GPWAS model for collected phenotype and genotype data in a given p
 ```
 FDR = (M/N)/R
 ```
+# Speed up the computation of GPWAS
+
+Depend on the size of actual data matrix you have, we recommend you to split your genotype matrix into multiple subsets if you have too many phenotypes or/and too dense SNP per gene or/and too many individuals in the given population. 
