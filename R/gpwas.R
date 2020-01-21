@@ -18,7 +18,7 @@
 gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=0.01){
   options(warn=-1)
   options("getSymbols.warning4.0"=FALSE)
-  mygeno = read.table(ingeno,sep='\t',head=T, check.names = FALSE)
+  mygeno = read.table(ingeno,sep='\t',head=T, check.names = FALSE) # 'mygeno' is the SNP data for all the genes
   if (missing(g)){
     mygeno = mygeno
   } else {
@@ -26,38 +26,39 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     gset = as.character(gfile$Candidate)
     mygeno = mygeno[mygeno$Gene %in% gset, ]
   }
-  mypheno = read.table(inpheno, head = TRUE)
-  gene = unique(mygeno$Gene)
-  R = R
+  mypheno = read.table(inpheno, head = TRUE) # 'mypheno' is the phenotype data
+  gene = unique(mygeno$Gene) # 'gene' is the names for all the genes
   glist = c()
   gvalue = c()
 
   plist = c()
   for (i in c(1:pc)){
-    plist = c(plist,paste('PC[, ',toString(i),']',sep=''))
+    plist = c(plist,paste('PC[, ',toString(i),']',sep='')) 
   }
-  init_pc = paste(plist,collapse= " + ")
+  init_pc = paste(plist,collapse= " + ") # equation expression for PC scores in the model
   med_pc = paste(init_pc,' + ',sep='')
 
-  for (g in gene){ # iterating all candidate genes within inside SNPs
+  for (g in gene){ # iterating all candidate genes
+    #--------------- Data pre-processing for the gth gene ---------------
     print (g)
     glist = c(glist,g)
-    tp = mygeno[mygeno$Gene==g,]
+    tp = mygeno[mygeno$Gene==g,] # SNPs for the gene in the gth iteration
     th = tp$SNP[1]
     chr = unlist(strsplit(as.character(th),'_'))[1]
     chrom = gsub('S','',chr)
     PC = read.table(paste(inpc,'/Population_structure_exclude_chrom_',chrom,'.txt',sep=''),sep=' ',head=T)
     PC = PC[,c(1:pc)]
-    #--------------- Data processing ---------------
-    A = tp[,-1]
-    B1 = mypheno[, -1]
+
+    A = tp[,-1] # delete the first column in the dataset 'tp'
+    B1 = mypheno[, -1] # delete the first column in the dataset 'mypheno'
     M = dim(B1)
     C = names(A)
-    C1 = intersect(C, as.character(mypheno[, 1]))
+    C1 = intersect(C, as.character(mypheno[, 1])) # obtain the common genotypes shared by genotype data 'tp' and the phenotype data 'mypheno'
     N = length(C1)
     DataGene = matrix(0, N, dim(A)[1])
     DataPheno = matrix(0, N, M[2])
-    #-------------- Missing data cleaning -------------
+    
+    #-------------- Prepare the genotype data 'DataGene' and the phenotype data 'DataPheno' with the common genotypes in 'C1' for the gth gene -------------
     for (i in 1 : N){
       index1 = which(C == C1[i])
       DataGene[i, ] = A[, index1]
@@ -75,27 +76,29 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     snp_number = length(unique(A$SNP))
     SNPname = unique(A$SNP)
 
-    #--------------- Model Selection Running ---------------
-    #----------Processing genes with multiple SNPs----------------
+    #--------------- Model Selection and Inference ---------------
+    #---------- Genes with multiple SNPs----------------
     if (snp_number > 1){
-      #---------Internal collenarity control per gene------------
+      #---------Internal collenarity control for the SNPs of each gene------------
       Q1 = cov(DataGene)
-      E1 = eigen(Q1)
+      E1 = eigen(Q1) # eigen decomposition for the covariance of the SNPs data
       E1value = E1$values
       E1score = E1$vectors
-      E2 = which(E1value < 10^(-5))
+      E2 = which(E1value < 10^(-5)) # find the very small eigenvalues which indicate collenarity
       if (length(E2) == 0) SNPIndex = c(1 : length(SNPname))
       if (length(E2) > 0){
         keep = c()
         tempBefore = c()
-        for (i in length(E2) : 1){
-          temp = E1score[, E2[i]]
+        for (i in length(E2) : 1){ # start with the smallest eigenvalue smaller than 10^(-5)
+          temp = E1score[, E2[i]] # get the corresponding eigenvector
           tempNow = setdiff(which(abs(temp) > 10^(-5)), tempBefore)
-          if (length(tempNow) > 0) keep = c(keep, tempNow[1])
+          if (length(tempNow) > 0) keep = c(keep, tempNow[1]) # only keep the first component of the eigenvectors (corresponding to those very small eigenvalues) 
+                                                              # with absolute value larger than 10^(-5)
           tempBefore = union(which(abs(temp) > 10^(-5)), tempBefore)
         }
-        SNPIndex = c(setdiff(c(1 : length(E1value)), tempBefore), keep)
+        SNPIndex = c(setdiff(c(1 : length(E1value)), tempBefore), keep) # 'SNPIndex' contains the final SNPs going into the step-wise selection model
       }
+      #--------- delete the missing values ---------
       M1 = dim(DataGene)
       indexNA = which(is.na(colSums(DataPheno)) == TRUE)
       if (length(indexNA)==0){
