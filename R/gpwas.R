@@ -111,20 +111,21 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       }
       names3 = names(DataPheno3)
       M2 = dim(DataPheno2)
-
+      #--------- Initial model with SNPs as covariates and PC scores as covariates ---------
       SNPname = paste0("SNP", 1 : M1[2])
-      DataGene2 = data.frame(DataGene[, SNPIndex])
+      DataGene2 = data.frame(DataGene[, SNPIndex]) # SNP data with the SNPs in the selected 'SNPIndex' set
       names(DataGene2) = SNPname[SNPIndex]
-      Covariate = c()
       fmla0 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~", init_pc))
-      fit = lm(formula = fmla0, data = DataGene2)
+      fit = lm(formula = fmla0, data = DataGene2) 
+      
+      #--------- Step-wise model selection ---------
+      Covariate = c()
       thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure 
       thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure 
 
       for (rep in 1 : R){ # iterating the set number of iterations R
-        candidate = setdiff(c(1 : M2[2]), Covariate)
+        candidate = setdiff(c(1 : M2[2]), Covariate) # candidate phenotype covariates in the (rep)th repetition 
         pv = c()
-
         #--- add in ---
         for (i in 1 : length(candidate)){
           tempIndex = c(Covariate, candidate[i])
