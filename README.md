@@ -13,7 +13,7 @@
 > [zliang@huskers.unl.edu](Zhikai Liang)
 
 ### Citation:
-Liang, Z., Qiu, Y. and Schnable, J., 2019. A functionally, structurally, and evolutionarily distinct set of genes are linked to phenome wide variation in maize. [bioRxiv](https://www.biorxiv.org/content/10.1101/534503v4.abstract), p.534503.
+> Liang, Z., Qiu, Y. and Schnable, J., 2019. A functionally, structurally, and evolutionarily distinct set of genes are linked to phenome wide variation in maize. [bioRxiv](https://www.biorxiv.org/content/10.1101/534503v4.abstract), p.534503.
 ---
 # Installation and Package loading
 ```r
