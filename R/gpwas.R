@@ -15,7 +15,7 @@
 #' @export
 #'
 #' @examples gpwas(ingeno,inpheno,inpc,g,gp,gv,R=35)
-gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=0.01){
+gpwas = function(ingeno,inpheno,inpc,gp,gv,R=num,pc=3,g=NULL,selectIn=0.01,selectOut=0.01){
   options(warn=-1)
   options("getSymbols.warning4.0"=FALSE)
   mygeno = read.table(ingeno,sep='\t',head=T, check.names = FALSE) # 'mygeno' is the SNP data for all the genes
@@ -33,7 +33,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
 
   plist = c()
   for (i in c(1:pc)){
-    plist = c(plist,paste('PC[, ',toString(i),']',sep='')) 
+    plist = c(plist,paste('PC[, ',toString(i),']',sep=''))
   }
   init_pc = paste(plist,collapse= " + ") # equation expression for PC scores in the model
   med_pc = paste(init_pc,' + ',sep='')
@@ -46,7 +46,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     th = tp$SNP[1]
     chr = unlist(strsplit(as.character(th),'_'))[1]
     chrom = gsub('S','',chr)
-    PC = read.table(paste(inpc,'/pop-exclude-chr',chrom,'.txt',sep=''),sep=' ',head=T)
+    PC = read.table(paste(inpc,'/exclude-chr',chrom,'.txt',sep=''),sep=' ',head=T)
     PC = PC[,c(1:pc)]
 
     A = tp[,-1] # delete the first column in the dataset 'tp'
@@ -57,7 +57,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     N = length(C1)
     DataGene = matrix(0, N, dim(A)[1])
     DataPheno = matrix(0, N, M[2])
-    
+
     #-------------- Prepare the genotype data 'DataGene' and the phenotype data 'DataPheno' with the common genotypes in 'C1' for the gth gene -------------
     for (i in 1 : N){
       index1 = which(C == C1[i])
@@ -92,8 +92,8 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
         for (i in length(E2) : 1){ # start with the smallest eigenvalue smaller than 10^(-5)
           temp = E1score[, E2[i]] # get the corresponding eigenvector
           tempNow = setdiff(which(abs(temp) > 10^(-5)), tempBefore)
-          if (length(tempNow) > 0) keep = c(keep, tempNow[1]) # only keep the first component of the eigenvectors (corresponding to those very small eigenvalues) 
-                                                              # with absolute value larger than 10^(-5)
+          if (length(tempNow) > 0) keep = c(keep, tempNow[1]) # only keep the first component of the eigenvectors (corresponding to those very small eigenvalues)
+          # with absolute value larger than 10^(-5)
           tempBefore = union(which(abs(temp) > 10^(-5)), tempBefore)
         }
         SNPIndex = c(setdiff(c(1 : length(E1value)), tempBefore), keep) # 'SNPIndex' contains the final SNPs going into the step-wise selection model
@@ -116,15 +116,15 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       DataGene2 = data.frame(DataGene[, SNPIndex]) # SNP data with the SNPs in the selected 'SNPIndex' set
       names(DataGene2) = SNPname[SNPIndex]
       fmla0 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~", init_pc))
-      fit = lm(formula = fmla0, data = DataGene2) 
-      
+      fit = lm(formula = fmla0, data = DataGene2)
+
       #--------- Step-wise model selection ---------
       Covariate = c()
-      thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure 
-      thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure 
+      thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure
+      thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure
 
       for (rep in 1 : R){ # iterating the set number of iterations R
-        candidate = setdiff(c(1 : M2[2]), Covariate) # candidate phenotype covariates in the (rep)th repetition 
+        candidate = setdiff(c(1 : M2[2]), Covariate) # candidate phenotype covariates in the (rep)th repetition
         pv = c()
         #--- add in ---
         for (i in 1 : length(candidate)){# Add each one of the candidate covariates into the current model; calculate its pvalue
@@ -156,7 +156,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
           cat("iteration =", rep, ", Cov =", tempNames0, "\n")
         }
         if (pv[index1] >= thresholdIn){ cat("iteration =", rep, "No new add-in", "\n") } # if the smallest candidate pvalue is larger than 'thresholdIn',
-                                                                                         # stop adding new varaible into the model
+        # stop adding new varaible into the model
 
         #--- leave out ---
         out01 = anova(fit)$"Pr(>F)" # pvalues for all the covariates currently in the model
@@ -164,7 +164,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
         if (length(out02) == 1) pv0 = 0
         if (length(out02) >= 2) pv0 = out02[-1]
         index2 = order(pv0)[length(pv0)]
-        pvmax = pv0[index2] # get the maximum pvalue 
+        pvmax = pv0[index2] # get the maximum pvalue
         if (pvmax > thresholdOut){ # if the maximum pvalue is larger than 'thresholdOut', delete the least significant variable in the model
           Covariate = Covariate[-index2] # delete the least significant variable in the model
           tempData01 = DataPheno2[, Covariate]
@@ -177,7 +177,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
           cat("iteration =", rep, ", Cov =", tempNames0, "\n")
         }
         if (pvmax <= thresholdOut){ cat("iteration =", rep, "No leave-out", "\n")} # if the maximum pvalue is less than 'thresholdOut',
-                                                                                   # keep all the current variables
+        # keep all the current variables
       }
       data0 = cbind(DataGene2, PC)
       fmla0 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", init_pc))
@@ -206,10 +206,10 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       SNP = DataGene[, 1]
       single_SNP = as.formula(paste('SNP', paste(1, init_pc, sep=' + '), sep=' ~ '))
       fit = lm(single_SNP)
-      
+
       #--------- Step-wise model selection ---------
       Covariate = c()
-      thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure 
+      thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure
       thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure
 
       for (rep in 1 : R){
