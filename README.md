@@ -78,7 +78,7 @@ You need to prepare separate PC covariate files excluding each individual chromo
 
 # Running the model
 ```r
-gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
+> gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
 ```
  **ingeno**: Input genotype file name/directory. It is recommended to split big genotype file into multiple in order to reduce memory load.
 
@@ -96,7 +96,7 @@ gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
 
  ```r
  # Customizing more
- gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num, pc = 3, selectIn = 0.01, selectOut = 0.01)
+ > gpwas(ingeno, inpheno, inpc, g, gp, gv, R = num, pc = 3, selectIn = 0.01, selectOut = 0.01)
  ```
 **g**: A list of specific gene that needs to analyze. By default the model will run for all of genes detected in the input genotype file.
 
@@ -117,7 +117,7 @@ Example as below:
 ```r
 # Run the demo data
 # Demo data was stored in Data/ directory of GPWAS package
-gpwas(ingeno='GPWAS-demo.geno', inpheno='GPWAS-demo.pheno', pc=3, inpc = 'population-structure-demo', gp='output-geno-phenotypes.txt', gv='output-geno-pvalue.txt', R=5)
+> gpwas(ingeno='GPWAS-demo.geno', inpheno='GPWAS-demo.pheno', pc=3, inpc = 'population-structure-demo', gp='output-geno-phenotypes.txt', gv='output-geno-pvalue.txt', R=5)
 ```
 
 # GPWAS genes selection
