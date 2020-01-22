@@ -117,7 +117,7 @@ Example as below:
 ```r
 # Run the demo data
 # Demo data was stored in Data/ directory of GPWAS package
-gpwas(ingeno='GPWAS-demo.geno', inpheno='GPWAS-demo.pheno', pc=3, inpc = 'population-structure-demo', gp='output-geno.txt', gv='output-geno-pvalue.txt', R=5)
+gpwas(ingeno='GPWAS-demo.geno', inpheno='GPWAS-demo.pheno', pc=3, inpc = 'population-structure-demo', gp='output-geno-phenotypes.txt', gv='output-geno-pvalue.txt', R=5)
 ```
 
 # GPWAS genes selection
