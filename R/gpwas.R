@@ -46,7 +46,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     th = tp$SNP[1]
     chr = unlist(strsplit(as.character(th),'_'))[1]
     chrom = gsub('S','',chr)
-    PC = read.table(paste(inpc,'/Population_structure_exclude_chrom_',chrom,'.txt',sep=''),sep=' ',head=T)
+    PC = read.table(paste(inpc,'/pop-exclude-chr',chrom,'.txt',sep=''),sep=' ',head=T)
     PC = PC[,c(1:pc)]
 
     A = tp[,-1] # delete the first column in the dataset 'tp'
