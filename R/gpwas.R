@@ -41,7 +41,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
   for (g in gene){ # iterating all candidate genes
     #--------------- Data pre-processing for the gth gene ---------------
     print (g)
-    glist = c(glist,g)
+    glist = c(glist,g) # the vector of the gene names
     tp = mygeno[mygeno$Gene==g,] # SNPs for the gene in the gth iteration
     th = tp$SNP[1]
     chr = unlist(strsplit(as.character(th),'_'))[1]
@@ -111,7 +111,7 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       }
       names3 = names(DataPheno3)
       M2 = dim(DataPheno2)
-      #--------- Initial model with SNPs as covariates and PC scores as covariates ---------
+      #--------- Initial model with SNPs as responses and PC scores as covariates ---------
       SNPname = paste0("SNP", 1 : M1[2])
       DataGene2 = data.frame(DataGene[, SNPIndex]) # SNP data with the SNPs in the selected 'SNPIndex' set
       names(DataGene2) = SNPname[SNPIndex]
@@ -127,23 +127,23 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
         candidate = setdiff(c(1 : M2[2]), Covariate) # candidate phenotype covariates in the (rep)th repetition 
         pv = c()
         #--- add in ---
-        for (i in 1 : length(candidate)){
+        for (i in 1 : length(candidate)){# Add each one of the candidate covariates into the current model; calculate its pvalue
           tempIndex = c(Covariate, candidate[i])
           tempData = DataPheno2[, tempIndex]
           tempNames = names3[tempIndex]
           data1 = data.frame(tempData)
           names(data1) = tempNames
           data2 = cbind(DataGene2, data1)
-          fmla1 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", med_pc, paste(tempNames, collapse= "+")))
-          fit1 = lm(formula = fmla1, data = data2)
+          fmla1 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", med_pc, paste(tempNames, collapse= "+"))) # add one covariate 'candidate[i]'
+          fit1 = lm(formula = fmla1, data = data2) # fit the model with 'candidate[i]'
           out1 = anova(fit1)$"Pr(>F)"
           out2 = out1[-c(2:(pc+1),length(out1))]
           temp1 = length(out2)
           if (temp1 <= length(tempIndex)){ pv[i] = 1}
-          if (temp1 > length(tempIndex)){ pv[i] = out2[temp1]}
+          if (temp1 > length(tempIndex)){ pv[i] = out2[temp1]} # 'pv[i]' is the pvalue associated with 'candidate[i]'
         }
-        index1 = order(pv)[1]
-        if (pv[index1] < thresholdIn){
+        index1 = order(pv)[1] # order the pvalues for the candidate covariates
+        if (pv[index1] < thresholdIn){ # if the smallest candidate pvalue is less than 'thresholdIn', add it into the current model
           tempIndex0 = c(Covariate, candidate[index1])
           tempData0 = DataPheno2[, tempIndex0]
           tempNames0 = names3[tempIndex0]
@@ -151,44 +151,46 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
           names(data10) = tempNames0
           data20 = cbind(DataGene2, data10)
           fmla = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", med_pc, paste(tempNames0, collapse= "+")))
-          fit = lm(formula = fmla, data = data20)
-          Covariate = c(Covariate, candidate[index1])
+          fit = lm(formula = fmla, data = data20) # update the model
+          Covariate = c(Covariate, candidate[index1]) # update the covariates in the model
           cat("iteration =", rep, ", Cov =", tempNames0, "\n")
         }
-        if (pv[index1] >= thresholdIn){ cat("iteration =", rep, "No new add-in", "\n") }
+        if (pv[index1] >= thresholdIn){ cat("iteration =", rep, "No new add-in", "\n") } # if the smallest candidate pvalue is larger than 'thresholdIn',
+                                                                                         # stop adding new varaible into the model
 
         #--- leave out ---
-        out01 = anova(fit)$"Pr(>F)"
-        out02 = out01[-c(2:(pc+1),length(out01))]
+        out01 = anova(fit)$"Pr(>F)" # pvalues for all the covariates currently in the model
+        out02 = out01[-c(2:(pc+1),length(out01))] # delete the pvalues corresponding to the PC scores
         if (length(out02) == 1) pv0 = 0
         if (length(out02) >= 2) pv0 = out02[-1]
         index2 = order(pv0)[length(pv0)]
-        pvmax = pv0[index2]
-        if (pvmax > thresholdOut){
-          Covariate = Covariate[-index2]
+        pvmax = pv0[index2] # get the maximum pvalue 
+        if (pvmax > thresholdOut){ # if the maximum pvalue is larger than 'thresholdOut', delete the least significant variable in the model
+          Covariate = Covariate[-index2] # delete the least significant variable in the model
           tempData01 = DataPheno2[, Covariate]
           tempNames01 = names3[Covariate]
           data11 = data.frame(tempData01)
           names(data11) = tempNames01
           data21 = cbind(DataGene2, data11)
           fmla = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", med_pc, paste(tempNames01, collapse= "+")))
-          fit = lm(formula = fmla, data = data21)
+          fit = lm(formula = fmla, data = data21) # re-fit the model
           cat("iteration =", rep, ", Cov =", tempNames0, "\n")
         }
-        if (pvmax <= thresholdOut){ cat("iteration =", rep, "No leave-out", "\n")}
+        if (pvmax <= thresholdOut){ cat("iteration =", rep, "No leave-out", "\n")} # if the maximum pvalue is less than 'thresholdOut',
+                                                                                   # keep all the current variables
       }
       data0 = cbind(DataGene2, PC)
       fmla0 = as.formula(paste("cbind(", paste(SNPname[SNPIndex], collapse= ","), ") ~ ", init_pc))
-      fit0 = lm(formula = fmla0, data = data0)
-      anova.compare = anova(fit, fit0)
-      pp = anova.compare$`Pr(>F)`[2]
-      gvalue = c(gvalue,pp)
+      fit0 = lm(formula = fmla0, data = data0) # compare the final model from step-wise selection and the initial model with only the PC scores
+      anova.compare = anova(fit, fit0) # Anova analysis for this comparison
+      pp = anova.compare$`Pr(>F)`[2] # pvalue for testing whether some of the phenotype variables in the final model are nonzero
+      gvalue = c(gvalue,pp) # gather such pvalues for each gene
     }
 
-    #----------Processing genes with single SNP----------------
+    #---------- Genes with single SNP (the codes are very similar to the multiple SNPs case, we ignore some of the comments on the codes) ----------
     else{
       M1 = dim(DataGene)
-      #--------Missing data cleaning --------------------------
+      #---------- delete the missing values ----------
       indexNA = which(is.na(colSums(DataPheno)) == TRUE)
       if (length(indexNA)==0){
         DataPheno2 = DataPheno
@@ -200,11 +202,13 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
       }
       names3 = names(DataPheno3)
       M2 = dim(DataPheno2)
-
+      #--------- Initial model with the SNP as response and PC scores as covariates ---------
       SNP = DataGene[, 1]
-      Covariate = c()
       single_SNP = as.formula(paste('SNP', paste(1, init_pc, sep=' + '), sep=' ~ '))
       fit = lm(single_SNP)
+      
+      #--------- Step-wise model selection ---------
+      Covariate = c()
       thresholdIn = selectIn # threshold for selection of phenotypes in stepwise selection procedure 
       thresholdOut = selectOut # threshold for drop-out of phenotypes in stepwise selection procedure
 
@@ -276,8 +280,8 @@ gpwas = function(ingeno,inpheno,inpc,g,gp,gv,R=num,pc=3,selectIn=0.01,selectOut=
     myl = length(rownames(kk))
     left = rep(g,myl)
     d = cbind(left,tk)
-    write.table(d,file=gp,append=T,col.names = FALSE) # generating the file about each inspected gene with associated phenotypes
-    gd = cbind(glist,gvalue)
+    write.table(d,file=gp,append=T,col.names = FALSE) # generating the file about each inspected gene with the selected phenotypes
+    gd = cbind(glist,gvalue) # the data frame with the names of genes and their associated pvalues 'pp'
   }
-  write.table(gd,file=gv,append=T,col.names = FALSE) # generating the accumulated p-value for each gene by GPWAS
+  write.table(gd,file=gv,append=T,col.names = FALSE) # generating the file containing the p-values for each gene by GPWAS
 }
