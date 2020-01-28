@@ -76,7 +76,7 @@ You need to prepare separate PC covariate files excluding each individual chromo
 
 **Example**: When you want to exclude chromosome 1, you need to make the file name such as "exclude-chr1.txt". Then store all of these files to a folder.
 
-# Running the model
+# How to use
 ```r
 > gpwas(ingeno, inpheno, inpc, gp, gv, R = num)
 ```
