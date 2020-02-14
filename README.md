@@ -86,9 +86,21 @@ You need to prepare separate PC covariate files excluding each individual chromo
 
  **inpc**: Input folder with PCA parsed population structure covariance. If n number of chromosomes, n number of separate files should be included, as SNPs on each chromosome is excluded for performing PCA once.
 
- **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes.
+ **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes (both gene names and values are just examples).
 
- **gv**: Output file name/directory of terminated p value for each gene.
+| "Gene" | "Predictor" | "Predictor p-value" |
+| "Gene1" | PC[,1] | 1.0e-4 |
+| "Gene1" | PC[,2] | 1.2e-2 |
+| "Gene1" | PC[,3] | 4.3e-2 |
+| "Gene1" | Pheno1 | 3.7e-4 |
+| "Gene1" | Pheno2 | 1.4e-3 |
+
+ **gv**: Output file name/directory of terminated p value for each gene (both gene names and values are just examples).
+ 
+| "Gene" | "GPWAS p-value" |
+| "Gene1" | 2.2e-6 |
+| "Gene2" | 1.3e-8 |
+| "Gene3" | 4.5e-10 |
 
  **R**: Number of iteration for scanning all of input phenotypes with one specific gene. Too big number will be redundancy and computationally cost. Suggested ranging from 10-50.
 
