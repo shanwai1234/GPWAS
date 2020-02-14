@@ -89,6 +89,7 @@ You need to prepare separate PC covariate files excluding each individual chromo
  **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes (both gene names and values are just examples).
 
 | "Gene" | "Predictor" | "Predictor p-value" |
+| :---: | :---: |:---: |
 | "Gene1" | PC[,1] | 1.0e-4 |
 | "Gene1" | PC[,2] | 1.2e-2 |
 | "Gene1" | PC[,3] | 4.3e-2 |
@@ -98,6 +99,7 @@ You need to prepare separate PC covariate files excluding each individual chromo
  **gv**: Output file name/directory of terminated p value for each gene (both gene names and values are just examples).
  
 | "Gene" | "GPWAS p-value" |
+| :---: | :---: |
 | "Gene1" | 2.2e-6 |
 | "Gene2" | 1.3e-8 |
 | "Gene3" | 4.5e-10 |
