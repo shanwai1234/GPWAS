@@ -72,12 +72,12 @@ Version 1.0.1 GPWAS package controls population structure using PC scores genera
 
 You need to prepare separate PC covariate files excluding each individual chromosome. If you have 10 chromosomes, you need to prepare 10 separate PC covariate files.
 
-## Imputation suggestion
-GPWAS requires both genotype and phenotype matrice to be complete. That being said, there is no missing data points allowed. For genotype data, imputation software [Beagle](https://faculty.washington.edu/browning/beagle/beagle.html) could work for this purpose. For phenotype data, it depends on your missing data rate. If your missing data point is in a low rate, you could just use the mean value of other observed data points for a trait to replace missing data point for this trait. It just needs a simple code to implement it, an example could be found in [here](https://stackoverflow.com/questions/25835643/replace-missing-values-with-column-mean). If missing data point in your data is common, you could either consider use [Phenix](https://mathgen.stats.ox.ac.uk/genetics_software/phenix/phenix.html) or [softImpute](https://cran.r-project.org/web/packages/softImpute/index.html) to implement the phenotype impputation.  
-
 **Note**: All items should be split by space. The order of samples should be identical to the order of samples in both genotype and phenotype file.
 
 **Example**: When you want to exclude chromosome 1, you need to make the file name such as "exclude-chr1.txt". Then store all of these files to a folder.
+
+## Imputation suggestion
+GPWAS requires both genotype and phenotype matrice to be complete. That being said, there is no missing data points allowed. For genotype data, imputation software [Beagle](https://faculty.washington.edu/browning/beagle/beagle.html) could work for this purpose. For phenotype data, it depends on your missing data rate. If your missing data point is in a low rate, you could just use the mean value of other observed data points for a trait to replace missing data point for this trait. It just needs a simple code to implement it, an example could be found in [here](https://stackoverflow.com/questions/25835643/replace-missing-values-with-column-mean). If missing data point in your data is common, you could either consider use [Phenix](https://mathgen.stats.ox.ac.uk/genetics_software/phenix/phenix.html) or [softImpute](https://cran.r-project.org/web/packages/softImpute/index.html) to implement the phenotype impputation.  
 
 # How to use
 ```r
