@@ -86,7 +86,7 @@ You need to prepare separate PC covariate files excluding each individual chromo
 
  **inpc**: Input folder with PCA parsed population structure covariance. If n number of chromosomes, n number of separate files should be included, as SNPs on each chromosome is excluded for performing PCA once.
 
- **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes (both gene names and values are just examples, PC[,1] shows the p value for the first principal component, and same for other selected principal components, Pheno1 and Pheno2 are incorporated phenotypes for this Gene1).
+ **gp**: Output file name/directory for selected phenotypes with every gene as well as p value of each selected phenotypes (both gene names and values are just examples, PC[,1] shows the p value for the first principal component, and same for other selected principal components, Pheno1 and Pheno2 are incorporated phenotypes for this Gene1. P-values in this gp file are generally not considered. One the gene in gv file is considered as signficant or in high rank of p-value, you could check in gp file for that specific gene and see which traits were selected for it).
 
 | "Gene" | "Predictor" | "Predictor p-value" |
 | :---: | :---: |:---: |
