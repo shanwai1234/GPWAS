@@ -154,4 +154,4 @@ Error in anova.mlm(fit1) : residuals have rank 3 < 4
 Calls: gpwas -> anova -> anova.mlm
 Execution halted
 ```
-Solution: This is likely multiple SNPs for a certain gene contain exact same information. You should make sure there are no duplicated SNPs inside one gene, even though their SNP anme is different 
+Solution: This is likely multiple SNPs for a certain gene contain exact same information. You should make sure there are no duplicated SNPs inside one gene, even though their SNP name is different 
