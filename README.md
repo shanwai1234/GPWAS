@@ -155,3 +155,17 @@ Calls: gpwas -> anova -> anova.mlm
 Execution halted
 ```
 Solution: This is likely multiple SNPs for a certain gene contain exact same information. You should make sure there are no duplicated SNPs inside one gene, even though their SNP name is different 
+
+# phenotype data shuffling suggestion
+This is one suggested methods for shuffling the phenotype data. 
+```
+# this is for one-round shuffling of your phenotype data.
+before = data.frame(matrix(c(1:90), nrow = 9)) # your original phenotype data
+after = data.frame(row.names=1:9)
+for (x in c(1:ncol(before))){
+  set.seed(100)
+  after = cbind(after, sample(before[,x]))
+}
+colnames(after) = colnames(before)
+after # your shuffled phenotype data
+```
