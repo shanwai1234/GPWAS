@@ -163,7 +163,7 @@ This is one suggested methods for shuffling the phenotype data.
 before = data.frame(matrix(c(1:90), nrow = 9)) # your original phenotype data
 after = data.frame(row.names=1:9)
 for (x in c(1:ncol(before))){
-  set.seed(100)
+  set.seed(100) # the number indicates one round of phentype shulling. If you want to get multiple shuffled phenotypes, you HAVE to change the number!
   after = cbind(after, sample(before[,x]))
 }
 colnames(after) = colnames(before)
