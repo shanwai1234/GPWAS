@@ -100,7 +100,7 @@ GPWAS requires both genotype and phenotype matrice to be complete. That being sa
 | "Gene1" | Pheno2 | 1.4e-3 |
 
  **gv**: Output file name/directory of terminated p value for each gene (both gene names and values are just examples).
- 
+
 | "Gene" | "GPWAS p-value" |
 | :---: | :---: |
 | "Gene1" | 2.2e-6 |
@@ -143,6 +143,7 @@ After running GPWAS model for collected phenotype and genotype data in a given p
 ```
 FDR = (M/N)/R
 ```
+A better estimation on FDR can be achieved through increasing permutation time.
 # Speed up the computation of GPWAS
 
 Depend on the size of actual data matrix you have, we recommend you to split your genotype matrix into multiple subsets if you have too many phenotypes or/and too dense SNP per gene or/and too many individuals in the given population. Then submitting jobs in parallel to a computing cluster would shorten computing time efficiently.
@@ -154,10 +155,10 @@ Error in anova.mlm(fit1) : residuals have rank 3 < 4
 Calls: gpwas -> anova -> anova.mlm
 Execution halted
 ```
-Solution: This is likely multiple SNPs for a certain gene contain exact same information. You should make sure there are no duplicated SNPs inside one gene, even though their SNP name is different 
+Solution: This is likely multiple SNPs for a certain gene contain exact same information. You should make sure there are no duplicated SNPs inside one gene, even though their SNP name is different
 
 # phenotype data shuffling suggestion
-This is one suggested methods for shuffling the phenotype data. 
+This is one suggested methods for shuffling the phenotype data.
 ```
 # this is for one-round shuffling of your phenotype data.
 before = data.frame(matrix(c(1:90), nrow = 9)) # your original phenotype data
