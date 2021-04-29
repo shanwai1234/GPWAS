@@ -143,7 +143,7 @@ After running GPWAS model for collected phenotype and genotype data in a given p
 ```
 FDR = (M/N)/R
 ```
-A better estimation on FDR can be achieved through increasing permutation time.
+A better estimation on FDR can be achieved through increasing permutation time. P-value threshold can be determined based on a permutation-based FDR approach using R codes deposited under ```utilis/FDR-GPWAS.R```. 
 # Speed up the computation of GPWAS
 
 Depend on the size of actual data matrix you have, we recommend you to split your genotype matrix into multiple subsets if you have too many phenotypes or/and too dense SNP per gene or/and too many individuals in the given population. Then submitting jobs in parallel to a computing cluster would shorten computing time efficiently.
