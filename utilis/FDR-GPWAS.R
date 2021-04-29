@@ -20,5 +20,6 @@ for (i in c(1:30)){
       perm_count = perm_count + 1
     }
   }
+  fdr = (perm_count/5)/ori_count
   print (paste(thres,fdr,ori_count,sep=';'))
 }
