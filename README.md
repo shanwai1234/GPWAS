@@ -11,6 +11,7 @@
 
 ### Contact:
 > [zliang@huskers.unl.edu] or [liang795@umn.edu] (Zhikai Liang)
+> Or raising your questions at ```issues```
 
 ### Citation:
 > Liang, Z., Qiu, Y. and Schnable, JC (2020). Genome-phenome wide association in maize and Arabidopsis identifies a common molecular and evolutionary signature. [Molecular Plant](https://www.cell.com/molecular-plant/fulltext/S1674-2052(20)30065-4)
