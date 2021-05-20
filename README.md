@@ -38,7 +38,7 @@ All of input data are required to be organized in following format.
 
 **Sample**: Individual sample name.
 
-**Note**: All items should be split by \tab. Making sure there is no missing data in your genotype file. For each SNP per gene, they should not be completely identical. We do recommend you to filter SNP based upon MAF (Minor Allele Frequency). To identify SNPs within each gene, you could use tools such as [bedtools](https://bedtools.readthedocs.io/en/latest/) or [pybedtools](https://daler.github.io/pybedtools/) module in python or [GenomicRanges](https://bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.html) Package in R
+**Note**: All items should be split by \tab. Making sure there is no missing data in your genotype file. For each SNP per gene, they should not be completely identical. We do recommend you to filter SNP based upon MAF (Minor Allele Frequency). To identify SNPs within each gene, you could use tools such as [bedtools](https://bedtools.readthedocs.io/en/latest/) in bash or [pybedtools](https://daler.github.io/pybedtools/) module in python or [GenomicRanges](https://bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.html) Package in R
 
 | Gene | SNP | Sample1 | Sample2 | Sample3 |
 | :---: | :---: |:---: |:---: | :---: |
