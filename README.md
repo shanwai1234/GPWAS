@@ -10,7 +10,7 @@
 > Zhikai Liang, Yumou Qiu and James C. Schnable.
 
 ### Contact:
-> [zliang@huskers.unl.edu] or [liang795@umn.edu] (Zhikai Liang)
+> [liang795@umn.edu] (Zhikai Liang)
 > Or raising your questions at ```issues```
 
 ### Citation:
